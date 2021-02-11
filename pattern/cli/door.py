@@ -46,12 +46,7 @@ def fold(startX, startY, height, currentPage):
     
     horizontalColorOffset = startX / canvasWidth
     verticalColorOffset = startY / canvasHeight
-    
-    # color = (
-    #     186 - horizontalColorOffset * 50 + math.sin((math.pi * 2) * currentPage/pages) * 30,
-    #     17 + horizontalColorOffset * 30 + math.sin((math.pi * 2) * currentPage/pages) * 10,
-    #     82 + horizontalColorOffset * 40 + math.sin((math.pi * 2) * currentPage/pages) * 10
-    # )
+
     color = (
         186 - horizontalColorOffset * 50,
         17 + horizontalColorOffset * 30,
@@ -64,7 +59,6 @@ def fold(startX, startY, height, currentPage):
     for x in range(0, gradientSteps):
         colorOffset -= colorOffset + x/gradientSteps * 50
         db.fill(*rgb(color[0]+ colorOffset, color[1] + colorOffset, color[2] + colorOffset))
-        # fill(random.random())
         db.polygon(
             (startX + ((height * 0.3) * x/gradientSteps), startY + height * 0.3 * x/gradientSteps),
             (startX + height * 2 - ((height * 0.2) * x/gradientSteps), 
@@ -77,17 +71,13 @@ def fold(startX, startY, height, currentPage):
 def drawFolds(foldWidth, currentPage):    
     ticks = 0
     for y in range(0, int(canvasHeight * 1.3), int(foldWidth * 0.6)):
-        # for x in range(0, canvasWidth, int(foldWidth * 1.8)):
         with db.savedState():
             yCopy = y
-            # translate(-2 * foldWidth * currentPage / pages, 0)
             db.rotate(-30, center=(0,yCopy))
-            # translate(-10 * currentPage / pages, -30 * currentPage / pages)
             xOffset = -foldWidth
             for x in range(xOffset, int(canvasWidth * 1.3), int(foldWidth * 1.8)):
                 yCopy -= foldWidth * 0.03
                 db.rotate(math.sqrt((x - xOffset + 1) * 0.1), center=(x,yCopy))
-                # fold(y, int(100 - x/width() * 10), foldWidth)
                 fold(x, yCopy, foldWidth, currentPage)
                 ticks += 1
                 if(ticks > 2000):
